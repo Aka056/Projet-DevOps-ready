@@ -15,6 +15,7 @@ services:
       - ./backend:/app
     depends_on: # On s'assure que le service db (Postgres) est démarré avant le backend 
       - db
+
     # La commande à exécuter pour démarrer le serveur Django
     command: > 
       sh -c "python manage.py migrate &&
@@ -34,6 +35,8 @@ services:
       - backend 
     environment: # on remet NODE_ENV en development pour le dev server
     - NODE_ENV=development
+    - NEXT_PUBLIC_API_URL=http://localhost:8000/
+    - DOCKER_ENV=true
     env_file: # On charge les variables d'environnement depuis le fichier .env.docker
       - ./frontend/.env.docker 
     # La commande à exécuter pour démarrer le serveur de développement Next.js

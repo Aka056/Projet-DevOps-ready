@@ -69,8 +69,6 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Autoriser les requêtes provenant de cette origine (React dev server)
     "http://127.0.0.1:3000",
-    "http://frontend:3000",
-
 ]
 
 
