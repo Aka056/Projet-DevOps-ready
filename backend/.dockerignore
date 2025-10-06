@@ -1,0 +1,43 @@
+# Fichiers Python compilés
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/__pycache__/
+
+# Fichiers de traduction compilés
+**/*.mo
+
+# Fichiers Markdown (docs, README, etc.)
+**/*.md
+
+# Fichiers sensibles ou spécifiques à l’environnement local
+venv/
+.env
+.env.docker
+.env.local
+env/
+*.db
+*.sqlite3
+
+# Fichiers de logs et de debug
+*.log
+
+# Dossiers de test ou de couverture
+tests/
+coverage/
+
+# Dossiers et fichiers liés à l’IDE
+.vscode/
+
+# Fichiers Docker eux-mêmes
+Dockerfile
+.dockerignore
+
+# Fichiers liés au contrôle de version
+.git/
+.gitignore
+
+# Fichiers générés par Django (si non gérés par volumes)
+media/
+staticfiles/
+/static/

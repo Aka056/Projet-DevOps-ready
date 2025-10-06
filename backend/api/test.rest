@@ -1,0 +1,41 @@
+# POST vas nous permettre de créer une nouvelle transaction 
+POST http://localhost:8000/api/transactions/ 
+Content-Type: application/json
+
+{
+    "text": "Salaire Août",
+    "amount": -5000
+}
+
+### on fait trois hashtags pour marquer la fin d'une requête et le début d'une autre
+
+# GET vas nous permettre de récupérer la liste des transactions
+GET http://localhost:8000/api/transactions/ 
+#ON OUBLIE PAS LE SLASH A LA FIN
+
+### on passe à un autre appel de l'API
+DELETE  http://localhost:8000/api/transactions/a672a6b7-7d6a-4f08-9343-c4fb79588798/
+#ON PRÉCISE L'ID DE LA TRANSACTION QUE L'ON VEUT SUPPRIMER " "id": "6738cd4e-3bc6-4a36-90df-c41feeddb9b8","
+
+###
+
+# PUT vas nous permettre de modifier une transaction de façon complète (on doit tout renvoyer)
+PUT  http://localhost:8000/api/transactions/aa54d623-d6fb-4512-a04d-d4998a6f84eb/
+Content-Type: application/json
+
+{
+    "text": "Salaire février",
+    "amount": 10000
+
+}
+
+###
+
+# PATCH vas nous permettre de modifier une transaction de façon partielle (on renvoie que ce que l'on veut modifier)
+PATCH  http://localhost:8000/api/transactions/aa54d623-d6fb-4512-a04d-d4998a6f84eb/
+Content-Type: application/json
+
+{
+    "amount": 10
+}
+

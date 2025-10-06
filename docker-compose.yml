@@ -1,0 +1,64 @@
+# version: "3.9"
+
+services:
+
+  # --- BACKEND DJANGO ---
+  backend: # Le nom du service
+
+    build: ./backend # On build le backend (en spécifiant le chemin vers le Dockerfile dans le dossier ./backend)
+    container_name: tuto-backend # Nom du conteneur
+    ports: # On mappe le port 8000 du conteneur au port 8000 de la machine hôte
+      - "8000:8000" 
+    env_file: # On charge les variables d'environnement depuis le fichier .env.docker
+      - ./backend/.env.docker
+    volumes: # On monte le dossier ./backend dans le conteneur pour le développement
+      - ./backend:/app
+    depends_on: # On s'assure que le service db (Postgres) est démarré avant le backend 
+      - db
+    # La commande à exécuter pour démarrer le serveur Django
+    command: > 
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+  # --- FRONTEND REACT / NEXT.JS ---
+  frontend: # Le nom du service
+    build: ./frontend # On build le frontend (en spécifiant le chemin vers le Dockerfile dans le dossier ./frontend)
+    container_name: tuto-frontend # Nom du conteneur
+    
+    ports: # On mappe le port 3000 du conteneur au port 3000 de la machine hôte
+      - "3000:3000" 
+    volumes: 
+      - ./frontend:/app 
+      - /app/node_modules   # volume anonyme pour isoler ceux du conteneur
+    depends_on: # On s'assure que le service backend est démarré avant le frontend
+      - backend 
+    environment: # on remet NODE_ENV en development pour le dev server
+    - NODE_ENV=development
+    env_file: # On charge les variables d'environnement depuis le fichier .env.docker
+      - ./frontend/.env.docker 
+    # La commande à exécuter pour démarrer le serveur de développement Next.js
+    command: >
+
+      sh -c "npm run dev"
+
+
+  # --- BASE DE DONNÉES POSTGRES ---
+  db: # Le nom du service
+    image: postgres:15 # On utilise l'image officielle de Postgres version 15 préinstallée
+    container_name: tuto-db # Nom du conteneur
+    restart: always # Redémarre toujours le conteneur en cas de plantage
+    environment: # Variables d'environnement pour configurer Postgres
+      POSTGRES_DB: mydb # Nom de la base de données
+      POSTGRES_USER: myuser # Nom d'utilisateur
+      POSTGRES_PASSWORD: 264352 # Mot de passe
+    ports: 
+      - "5432:5432" # On mappe le port 5432 du conteneur au port 5432 de la machine hôte
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # On monte un volume pour persister les données de la base de données
+
+
+
+# Déclaration des volumes
+volumes:
+  postgres_data: 
+
