@@ -1,0 +1,23 @@
+# Dépendances locales (reconstruites dans l'image)
+node_modules
+
+# Fichiers de build locaux
+.next
+
+# Fichiers sensibles
+.env
+*.log
+
+# Fichiers liés au contrôle de version
+.git/
+.gitignore
+
+# Fichiers inutiles pour le build
+Dockerfile
+.dockerignore
+.vscode/
+.DS_Store
+coverage/
+*.md
+npm-debug.log
+yarn-error.log
