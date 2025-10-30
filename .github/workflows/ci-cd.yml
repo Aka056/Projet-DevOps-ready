@@ -26,7 +26,7 @@ jobs: # "jobs" définit les tâches à exécuter dans le workflow
           DEFAULT_BRANCH: main
 
   build-and-test: # Nom du job
-    needs: super-lint # Ce job dépend du job "super-lint" évite de se lancer parallèlement avec lui
+    # needs: super-lint # Ce job dépend du job "super-lint" évite de se lancer parallèlement avec lui
     runs-on: ubuntu-latest # Spécifie l'environnement d'exécution
 
     services:  # "services" définit les services nécessaires pour le job
