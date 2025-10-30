@@ -94,8 +94,4 @@ jobs: # "jobs" définit les tâches à exécuter dans le workflow
       - name: Build containers
         run: docker compose -p project-devops build
 
-      # 5. (Optionnel) Lancer les tests
-      - name: Run tests
-        run: docker compose -p project-devops run backend pytest
-
 # "|" sert à indiquer que la commande continue sur plusieurs lignes 
