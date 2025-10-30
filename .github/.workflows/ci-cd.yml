@@ -1,0 +1,87 @@
+name: CI/CD-Pipeline
+
+# Déclenche le workflow sur les push et pull requests vers la branche main
+
+on: # "on" spécifie les événements qui déclenchent le workflow
+  push: # "push" déclenche le workflow lorsqu'il y a un push vers la branche spécifiée
+    branches:
+      - main # Branche principale
+  pull_request: 
+    branches:
+      - main 
+
+jobs: # "jobs" définit les tâches à exécuter dans le workflow
+
+  super-lint : # Nom du job
+    runs-on: ubuntu-latest # Spécifie l'environnement d'exécution
+
+    steps: # "steps" définit les étapes à exécuter
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Super-Linter #super-linter verifie la syntaxe du code
+        uses: github/super-linter@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BRANCH: main
+
+  build-and-test: # Nom du job
+    needs: super-lint # Ce job dépend du job "super-lint" évite de se lancer parallèlement avec lui
+    runs-on: ubuntu-latest # Spécifie l'environnement d'exécution
+
+    services:  # "services" définit les services nécessaires pour le job
+      postgres: # Nom du service
+        image: postgres:15  # Image Docker à utiliser
+        env: # Variables d'environnement pour le service
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: 264352
+          POSTGRES_DB: mydb
+        ports:   
+          - 5432:5432
+        options: >- 
+          --health-cmd "pg_isready -U myuser -d mydb"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps: # "steps" définit les étapes à exécuter
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Run Django tests
+        env:
+          DATABASE_URL: postgres://myuser:264352@localhost:5432/mydb
+        run: |
+          cd backend
+          python manage.py test
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+      - name: Build and run containers
+        run: |
+          docker-compose -p project-devops build
+
+# "|" sert à indiquer que la commande continue sur plusieurs lignes 
