@@ -80,6 +80,12 @@ jobs: # "jobs" définit les tâches à exécuter dans le workflow
           cd frontend
           npm run build
 
+      # Installer Docker Compose v2 (plugin officiel)
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose-plugin
+          
       - name: Build and run containers
         run: |
           docker-compose -p project-devops build
