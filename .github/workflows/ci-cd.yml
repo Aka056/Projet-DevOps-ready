@@ -25,6 +25,21 @@ jobs: # "jobs" définit les tâches à exécuter dans le workflow
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: main
+  
+  lint-and-fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run auto-fixers
+        run: |
+          black .
+          eslint . --fix
+          stylelint "**/*.css" --fix
+
+      - name: Run Super-Linter
+        uses: github/super-linter@v4
 
   build-and-test: # Nom du job
     # needs: super-lint # Ce job dépend du job "super-lint" évite de se lancer parallèlement avec lui

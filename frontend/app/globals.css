@@ -1,4 +1,5 @@
-@import "tailwindcss";
+@import url("tailwindcss");
+
 @plugin "daisyui" {
   themes: all;
 } 
