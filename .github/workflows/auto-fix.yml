@@ -1,0 +1,91 @@
+name: Auto Lint & Fix
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: # permet de le déclencher manuellement
+
+jobs:
+  auto-fix:
+    name: Auto Lint Fix
+    runs-on: ubuntu-latest
+
+    # Permissions nécessaires pour push et créer une PR
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      # 1️ Cloner le dépôt
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Récupère tout l’historique (sinon git push échoue)
+
+      # 2️ Configurer Python et Node.js
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      # 3️ Installer les outils de linting/formatage
+      - name: Install linters
+        run: |
+          pip install black
+          npm install -g eslint stylelint
+
+      # 4️ Exécuter les correcteurs automatiques
+      - name: Run auto-fixers
+        run: |
+          echo "Exécution des correcteurs automatiques..."
+          black . || true
+          eslint . --fix || true
+          stylelint "**/*.css" --fix || true
+
+      # 5️ Vérifier s’il y a des changements
+      - name: Check for code changes
+        id: git-check
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      # 6️ Commit + push sur une branche dédiée
+      - name: Commit and push changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          echo " Création de la branche auto-fix-lint..."
+          git checkout -B auto-fix-lint
+          git add .
+          git commit -m "style: auto-fix linting issues [auto]"
+          git push origin auto-fix-lint --force
+
+      # 7️ Créer ou mettre à jour la Pull Request
+      - name: Create Pull Request
+        if: steps.git-check.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: auto-fix-lint
+          base: main
+          title: " Auto-fix: lint & style corrections"
+          body: |
+            Ce commit a été généré automatiquement par le workflow **Auto Lint & Fix**.
+            Il contient des corrections automatiques de style via `black`, `eslint` et `stylelint`.
+          labels: |
+            auto-fix
+            lint
+          draft: false

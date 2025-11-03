@@ -6,56 +6,53 @@ on: # "on" spécifie les événements qui déclenchent le workflow
   push: # "push" déclenche le workflow lorsqu'il y a un push vers la branche spécifiée
     branches:
       - main # Branche principale
-  pull_request: 
+  pull_request:
     branches:
-      - main 
+      - main
+  workflow_dispatch: # permet de lancer manuellement le workflow depuis GitHub
 
 jobs: # "jobs" définit les tâches à exécuter dans le workflow
-
-  super-lint : # Nom du job
+  super-lint: # Nom du job
     runs-on: ubuntu-latest # Spécifie l'environnement d'exécution
 
     steps: # "steps" définit les étapes à exécuter
-      # 1. Récupérer le code
+    # 1. Récupérer le code
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 1️ Vérifier la syntaxe
       - name: Run Super-Linter #super-linter verifie la syntaxe du code
         uses: github/super-linter@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: main
-  
-      - name: Run auto-fixers
-        run: |
-          black .
-          eslint . --fix
-          stylelint "**/*.css" --fix
-
-      - name: Run Super-Linter
-        uses: github/super-linter@v4
+          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_PYTHON_BLACK: true
+          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_CSS: true
 
   build-and-test: # Nom du job
-    # needs: super-lint # Ce job dépend du job "super-lint" évite de se lancer parallèlement avec lui
+    needs: super-lint # Ce job dépend du job "super-lint" évite de se lancer parallèlement avec lui
     runs-on: ubuntu-latest # Spécifie l'environnement d'exécution
+    # evite de se lancer si l'acteur est github-actions ce qui evite les boucles infinies avec l'auto-fix.ym 
+    if: github.actor != 'github-actions' 
 
-    services:  # "services" définit les services nécessaires pour le job
+    services: # "services" définit les services nécessaires pour le job
       postgres: # Nom du service
-        image: postgres:15  # Image Docker à utiliser
+        image: postgres:15 # Image Docker à utiliser
         env: # Variables d'environnement pour le service
           POSTGRES_USER: myuser
           POSTGRES_PASSWORD: 264352
           POSTGRES_DB: mydb
-        ports:   
-          - 5432:5432
-        options: >- 
+        ports:
+          - 5433:5432 # Redirige le port 5432 du conteneur vers le port 5433 de l'hôte pour éviter les conflits locaux cela nous Évite les conflits vue qu'on a déjà PostgreSQL installé localement sur 5432.
+        options: >-
           --health-cmd "pg_isready -U myuser -d mydb"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
 
     steps: # "steps" définit les étapes à exécuter
-      
       - name: Checkout repository
         uses: actions/checkout@v4 # 1. Récupérer le code
 
@@ -101,6 +98,6 @@ jobs: # "jobs" définit les tâches à exécuter dans le workflow
 
       # 4. Construire les conteneurs avec docker compose
       - name: Build containers
-        run: docker compose -p project-devops build
+        run: docker compose -p project-devops build # On ne démarre pas les conteneurs ici, juste la construction — ceci reste une étape de CI, pas de déploiement. Le “run” se fera dans notre futur pipeline deploy.yml.
 
-# "|" sert à indiquer que la commande continue sur plusieurs lignes 
+# "|" sert à indiquer que la commande continue sur plusieurs lignes
