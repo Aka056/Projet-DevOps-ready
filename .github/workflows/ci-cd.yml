@@ -26,13 +26,6 @@ jobs: # "jobs" définit les tâches à exécuter dans le workflow
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: main
   
-  lint-and-fix:
-    needs: super-lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Run auto-fixers
         run: |
           black .
