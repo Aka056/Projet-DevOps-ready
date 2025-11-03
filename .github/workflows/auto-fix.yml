@@ -9,7 +9,7 @@ on:
       - main
   workflow_dispatch: # permet de le déclencher manuellement
   workflow_run:
-    workflows: ["🚀 CI/CD Pipeline"] # workflow après qui on agit (worflow précédent)
+    workflows: ["CI/CD-Pipeline"] # workflow après qui on agit (worflow précédent)
     types:
       - completed  # "completed" pr dire uniquement quand le workflow précédent est terminé
 
