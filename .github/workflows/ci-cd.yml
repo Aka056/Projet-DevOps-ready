@@ -27,6 +27,7 @@ jobs: # "jobs" définit les tâches à exécuter dans le workflow
           DEFAULT_BRANCH: main
   
   lint-and-fix:
+    needs: super-lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
