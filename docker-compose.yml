@@ -50,10 +50,8 @@ services:
     image: postgres:15 # On utilise l'image officielle de Postgres version 15 préinstallée
     container_name: tuto-db # Nom du conteneur
     restart: always # Redémarre toujours le conteneur en cas de plantage
-    environment: # Variables d'environnement pour configurer Postgres
-      POSTGRES_DB: mydb # Nom de la base de données
-      POSTGRES_USER: myuser # Nom d'utilisateur
-      POSTGRES_PASSWORD: 264352 # Mot de passe
+    env_file:
+      - ./backend/.env.db
     ports: 
       - "5432:5432" # On mappe le port 5432 du conteneur au port 5432 de la machine hôte
     volumes:
