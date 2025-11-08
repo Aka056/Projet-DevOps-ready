@@ -3,13 +3,7 @@ env/
 venv/
 
 # Fichiers d'environnement
-.env
-.env.local
-.env.docker
-.env.development
-.env.test
-.env.production
-.env.prod
+.env*
 
 # Python
 __pycache__/
@@ -18,10 +12,6 @@ __pycache__/
 
 # Logs
 *.log
-
-# Django migrations (optionnel si tu ne veux pas toutes les migrations)
-# **/migrations/
-# mais je te conseille de garder les migrations !
 
 # Base de données locale
 db.sqlite3
@@ -41,13 +31,6 @@ media/
 .DS_Store
 .vscode/
 .idea/
-
-# Docker
-Dockerfile
-docker-compose.yml
-docker-compose.dev.yml
-docker-compose.prod.yml
-.dockerignore
 
 # Tests / coverage
 htmlcov/
