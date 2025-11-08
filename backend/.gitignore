@@ -1,0 +1,71 @@
+# Environnements virtuels
+env/
+venv/
+
+# Fichiers d'environnement
+.env
+.env.local
+.env.docker
+.env.development
+.env.test
+.env.production
+.env.prod
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+
+# Django migrations (optionnel si tu ne veux pas toutes les migrations)
+# **/migrations/
+# mais je te conseille de garder les migrations !
+
+# Base de données locale
+db.sqlite3
+
+# Fichiers statiques collectés
+/staticfiles/
+media/
+
+# Configs et fichiers temporaires
+*.pot
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.swp
+*~
+.DS_Store
+.vscode/
+.idea/
+
+# Docker
+Dockerfile
+docker-compose.yml
+docker-compose.dev.yml
+docker-compose.prod.yml
+.dockerignore
+
+# Tests / coverage
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+*.pytest_cache/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+
+# pylint
+pylint*
+
+# Misc
+*.sqlite3
