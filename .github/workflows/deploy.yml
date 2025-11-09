@@ -1,4 +1,4 @@
-name: 🚀 Deploy to Production (AWS EC2)
+name: Deploy to Production (AWS EC2)
 
 on:
   push:
@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Cloner le code
+      # 1️ recuperer le code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Générer les fichiers .env.prod depuis GitHub Secrets
+      # 2️ Générer les fichiers .env.prod depuis GitHub Secrets
       - name: Generate backend .env.prod
         run: |
           echo "APP_ENV=prod" >> backend/.env.prod
@@ -45,21 +45,25 @@ jobs:
             
             cd /var/www/Projet-DevOps-ready
 
-            echo "🔄 Pulling latest code..."
+            echo " Pulling latest code..."
             git pull origin main
 
-            echo "📦 Updating .env.prod files..."
+            echo " Updating .env.prod files..."
             cp backend/.env.prod ./backend/.env.prod
             cp frontend/.env.prod ./frontend/.env.prod
 
-            echo "⛔ Stopping old containers..."
+            echo " Stopping old containers..."
             docker compose -f docker-compose.prod.yml down || true
 
-            echo "🔨 Rebuilding images..."
+            echo " Rebuilding images..."
             docker compose -f docker-compose.prod.yml build
 
-            echo "🚀 Starting services..."
+            echo " Starting services..."
             docker compose -f docker-compose.prod.yml up -d
 
-            echo "✅ Deployment completed!"
+            echo " Deployment completed!"
+
+      - name: Show logs if failure
+        if: failure()
+        run: docker compose -f docker-compose.prod.yml logs --tail=200
 
