@@ -33,7 +33,7 @@ jobs:
           echo "NEXT_PUBLIC_API_URL=${{ secrets.FRONT_PUBLIC_URL }}" >> frontend/.env.prod
           echo "INTERNAL_API_URL=http://backend:8000/" >> frontend/.env.prod
 
-      # 3️⃣ Se connecter en SSH à EC2
+      # 3 Se connecter en SSH à EC2
       - name: Connect to EC2 and deploy
         uses: appleboy/ssh-action@v1.2.0
         with:
