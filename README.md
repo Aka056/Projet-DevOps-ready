@@ -60,8 +60,3 @@ npm start
 
 1. Lancer les services avec Docker Compose.
 2. Accéder à l’application via `http://localhost:3000`.
-
-## Auteur
-
-Aka
-
