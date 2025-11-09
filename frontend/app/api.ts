@@ -2,7 +2,7 @@ import axios from "axios";
 
 const baseURL =
   typeof window === "undefined"
-    ? process.env.INTERNAL_API_URL  // côté serveur (Docker)
+    ? process.env.INTERNAL_API_URL  // côté serveur (Docker ou AWS)
     : process.env.NEXT_PUBLIC_API_URL; // côté navigateur
 
 const api = axios.create({

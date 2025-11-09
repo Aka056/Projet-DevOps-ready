@@ -15,7 +15,14 @@ from dotenv import load_dotenv
 import os
 
 # on choisit quel .env charger (local ou docker)
-ENV_FILE = ".env.local" if os.getenv("DJANGO_ENV") == "local" else ".env.docker"
+ 
+app_env = os.getenv("APP_ENV", "local")
+
+ENV_FILE = {
+    "local": ".env.local",
+    "docker": ".env.docker",
+    "prod": ".env.prod",
+}.get(app_env, ".env.local")
 
 load_dotenv(ENV_FILE, encoding="utf-8")  # ON IMPORTE nos VARIABLES D'ENVIRONNEMENT DU FICHIER .env et ON force L'ENCODAGE UTF-8
 

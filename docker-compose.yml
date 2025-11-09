@@ -35,8 +35,6 @@ services:
       - backend 
     environment: # on remet NODE_ENV en development pour le dev server
     - NODE_ENV=development
-    - NEXT_PUBLIC_API_URL=http://localhost:8000/
-    - DOCKER_ENV=true
     env_file: # On charge les variables d'environnement depuis le fichier .env.docker
       - ./frontend/.env.docker 
     # La commande à exécuter pour démarrer le serveur de développement Next.js
@@ -56,7 +54,6 @@ services:
       - "5432:5432" # On mappe le port 5432 du conteneur au port 5432 de la machine hôte
     volumes:
       - postgres_data:/var/lib/postgresql/data # On monte un volume pour persister les données de la base de données
-
 
 
 # Déclaration des volumes
