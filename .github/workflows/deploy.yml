@@ -32,6 +32,12 @@ jobs:
           echo "APP_ENV=prod" >> frontend/.env.prod
           echo "NEXT_PUBLIC_API_URL=${{ secrets.FRONT_PUBLIC_URL }}" >> frontend/.env.prod
           echo "INTERNAL_API_URL=http://backend:8000/" >> frontend/.env.prod
+      
+      - name: genererate db .env file
+        run: |
+          echo "POSTGRES_DB=${{ secrets.DB_NAME }}" >> backend/.env.db
+          echo "POSTGRES_USER=${{ secrets.DB_USER }}" >> backend/.env.db
+          echo "POSTGRES_PASSWORD=${{ secrets.DB_PASSWORD }}" >> backend/.env.db
 
       # 3 Se connecter en SSH à EC2
       - name: Connect to EC2 and deploy
