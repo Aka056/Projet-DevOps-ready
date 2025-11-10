@@ -5,7 +5,7 @@ services:
   # --- BACKEND DJANGO ---
   backend:
 
-    image: ghcr.io/aka056/backend:latest # en production plutot au lieu de build On utilise l'image construite et poussée sur GitHub Container Registry
+    image: ghcr.io/aka056/projet-devops/backend:latest # en production plutot au lieu de build On utilise l'image construite et poussée sur GitHub Container Registry
     container_name: backend-prod # Nom du conteneur 
     env_file: # On charge les variables d'environnement depuis le fichier .env.prod
       - ./backend/.env.prod
@@ -22,7 +22,7 @@ services:
 
   # --- FRONTEND REACT / NEXT.JS ---
   frontend:
-    image: ghcr.io/aka056/frontend:latest # en production plutot au lieu de build On utilise l'image construite et poussée sur GitHub Container Registry
+    image: ghcr.io/aka056/projet-devops/frontend:latest # en production plutot au lieu de build On utilise l'image construite et poussée sur GitHub Container Registry
     container_name: frontend-prod # Nom du conteneur
     expose: # On expose le port 3000 pour la communication entre conteneurs
       - "3000" 
