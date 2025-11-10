@@ -5,7 +5,7 @@ node_modules
 .next
 
 # Fichiers sensibles
-.env
+.env*
 *.log
 
 # Fichiers liés au contrôle de version

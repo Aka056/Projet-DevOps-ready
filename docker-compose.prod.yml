@@ -30,7 +30,7 @@ services:
       - "3000" 
     depends_on: # On s'assure que le service backend est démarré avant le frontend
       - backend 
-    environment: # on remet NODE_ENV en development pour le dev server
+    environment:
     - NODE_ENV=production
     networks:
       - app-net

@@ -12,10 +12,7 @@
 
 # Fichiers sensibles ou spécifiques à l’environnement local
 venv/
-.env
-.env.docker
-.env.local
-.env.prod
+.env*
 env/
 *.db
 *.sqlite3
