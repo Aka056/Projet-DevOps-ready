@@ -57,6 +57,7 @@ jobs:
             echo " Updating .env.prod files..."
             cp backend/.env.prod ./backend/.env.prod
             cp frontend/.env.prod ./frontend/.env.prod
+            cp backend/.env.db ./backend/.env.db
 
             echo " Stopping old containers..."
             docker compose -f docker-compose.prod.yml down || true
