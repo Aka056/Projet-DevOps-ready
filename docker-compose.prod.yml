@@ -5,7 +5,7 @@ services:
   # --- BACKEND DJANGO ---
   backend:
 
-    build: ./backend 
+    image: ghcr.io/aka056/backend:latest # en production plutot au lieu de build On utilise l'image construite et poussée sur GitHub Container Registry
     container_name: backend-prod # Nom du conteneur 
     env_file: # On charge les variables d'environnement depuis le fichier .env.prod
       - ./backend/.env.prod
@@ -22,9 +22,7 @@ services:
 
   # --- FRONTEND REACT / NEXT.JS ---
   frontend:
-    build:
-      context: ./frontend
-      target: runner # On utilise l'étape "runner" définie dans le Dockerfile pour le conteneur de production car elle permet d'avoir un conteneur léger avec uniquement ce qui est nécessaire pour run l'application et non pour la construction
+    image: ghcr.io/aka056/frontend:latest # en production plutot au lieu de build On utilise l'image construite et poussée sur GitHub Container Registry
     container_name: frontend-prod # Nom du conteneur
     expose: # On expose le port 3000 pour la communication entre conteneurs
       - "3000" 
