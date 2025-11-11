@@ -9,8 +9,8 @@ services:
     container_name: backend-prod # Nom du conteneur 
     env_file: # On charge les variables d'environnement depuis le fichier .env.prod
       - ./backend/.env.prod
-    ports: # On mappe le port 8000 du conteneur au port 8000 de la machine hôte
-      - "8000:8000" 
+    expose: # ici on expose le port 8000 au lieu de le mapper directement pour des raisons de sécurité car on ne veut pas exposer le backend directement à l'extérieur
+      - "8000"
     depends_on:  # On s'assure que le service db est démarré avant le backend
       - db
     networks:
@@ -24,8 +24,8 @@ services:
   frontend:
     image: ghcr.io/aka056/projet-devops/frontend:latest # en production plutot au lieu de build On utilise l'image construite et poussée sur GitHub Container Registry
     container_name: frontend-prod # Nom du conteneur
-    ports: # On mappe le port 8000 du conteneur au port 8000 de la machine hôte
-      - "3000:3000" 
+    expose: # On expose le port 3000 pour la communication entre conteneurs
+      - "3000" 
     depends_on: # On s'assure que le service backend est démarré avant le frontend
       - backend 
     environment:
