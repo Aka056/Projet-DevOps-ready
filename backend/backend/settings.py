@@ -14,6 +14,8 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 import dj_database_url
+# En local → Django lit .env
+# En CI/CD → Django lit DATABASE_URL
 
 # on choisit quel .env charger (local ou docker)
  
