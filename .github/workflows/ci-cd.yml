@@ -96,10 +96,6 @@ jobs: # "jobs" définit les tâches à exécuter dans le workflow
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 3. Installer Docker Compose (plugin officiel)
-      - name: Set up Docker Compose
-        uses: docker/setup-docker-action@v3
-
       # 4. Construire les conteneurs avec docker compose
       - name: Build containers
         run: docker compose -p project-devops build # On ne démarre pas les conteneurs ici, juste la construction — ceci reste une étape de CI, pas de déploiement. Le “run” se fera dans notre futur pipeline deploy.yml.
