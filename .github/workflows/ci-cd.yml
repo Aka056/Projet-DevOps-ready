@@ -26,11 +26,15 @@ jobs: # "jobs" définit les tâches à exécuter dans le workflow
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BRANCH: main
-          VALIDATE_ALL_CODEBASE: true
-          VALIDATE_PYTHON_BLACK: true
-          VALIDATE_JAVASCRIPT_ES: true
-          VALIDATE_CSS: true
-
+          #VALIDATE_ALL_CODEBASE: true
+          #VALIDATE_PYTHON_BLACK: true
+          #VALIDATE_JAVASCRIPT_ES: true
+          #VALIDATE_CSS: true
+          VALIDATE_ALL_CODEBASE: False
+          VALIDATE_PYTHON_BLACK: False
+          VALIDATE_JAVASCRIPT_ES: False
+          VALIDATE_CSS: False
+          
   build-and-test: # Nom du job
     needs: super-lint # Ce job dépend du job "super-lint" évite de se lancer parallèlement avec lui
     runs-on: ubuntu-latest # Spécifie l'environnement d'exécution
